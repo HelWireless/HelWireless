@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      推荐系统（一） | 垃圾中转站 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="一位不愿透漏姓名的木公鼠">
+    
+    
+
+    <meta name="description" content="#推荐系统简介 ##什么是推荐系统当今世界生活节奏如此之快，信息又是海量的涌来。为了得到有效的信息，于是诞生了搜索引擎和推荐引擎（为了和搜索引擎名字对应，当然也可以叫推荐系统）。这两者都是为了解决信息过载而提出的两种不同的技术，一个问题，两个出发点。搜索引擎的本质是帮助用户找到“他想要的东西”，对信息精确的检索，说起来就是众里寻她千百度 – 灯火阑珊处；推荐引擎则是为没有明确目的的用户给到指导意见">
+<meta name="keywords" content="推荐系统， 算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐系统（一） | 垃圾中转站">
+<meta property="og:url" content="http://yoursite.com/2019/01/31/推荐系统——1.简介/index.html">
+<meta property="og:site_name" content="垃圾中转站">
+<meta property="og:description" content="#推荐系统简介 ##什么是推荐系统当今世界生活节奏如此之快，信息又是海量的涌来。为了得到有效的信息，于是诞生了搜索引擎和推荐引擎（为了和搜索引擎名字对应，当然也可以叫推荐系统）。这两者都是为了解决信息过载而提出的两种不同的技术，一个问题，两个出发点。搜索引擎的本质是帮助用户找到“他想要的东西”，对信息精确的检索，说起来就是众里寻她千百度 – 灯火阑珊处；推荐引擎则是为没有明确目的的用户给到指导意见">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-d3938d5cc7fd4acf057c25abb9e829f9_r.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g03p1x6ehoj207606t3yr.jpg">
+<meta property="og:updated_time" content="2019-03-20T05:51:56.448Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="推荐系统（一） | 垃圾中转站">
+<meta name="twitter:description" content="#推荐系统简介 ##什么是推荐系统当今世界生活节奏如此之快，信息又是海量的涌来。为了得到有效的信息，于是诞生了搜索引擎和推荐引擎（为了和搜索引擎名字对应，当然也可以叫推荐系统）。这两者都是为了解决信息过载而提出的两种不同的技术，一个问题，两个出发点。搜索引擎的本质是帮助用户找到“他想要的东西”，对信息精确的检索，说起来就是众里寻她千百度 – 灯火阑珊处；推荐引擎则是为没有明确目的的用户给到指导意见">
+<meta name="twitter:image" content="https://pic2.zhimg.com/v2-d3938d5cc7fd4acf057c25abb9e829f9_r.jpg">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">垃圾中转站</a></h1>
+        <hr class="panel-cover__divider">
+
+        
+        <p class="panel-cover__description">
+          三里桥分站
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">推荐系统（一）</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2019-01-31" class="post-meta__date date">2019-01-31</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/推荐系统，-算法/">推荐系统， 算法</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>#推荐系统简介</p>
+<p>##什么是推荐系统<br>当今世界生活节奏如此之快，信息又是海量的涌来。为了得到有效的信息，于是诞生了<strong>搜索引擎</strong>和<strong>推荐引擎</strong>（为了和搜索引擎名字对应，当然也可以叫推荐系统）。这两者都是<strong>为了解决信息过载</strong>而提出的两种不同的技术，一个问题，两个出发点。搜索引擎的本质是帮助用户找到“他想要的东西”，对信息精确的检索，说起来就是众里寻她千百度 – 灯火阑珊处；推荐引擎则是为没有明确目的的用户给到指导意见，通过用户以前的访问记录猜到用户喜欢什么，然后把用户喜欢的东西找出来推送到用户面前。想象一下，周末无聊的你想看电影，可是面对网站上100年发行的数不胜数的电影，你会一脸懵逼。这时你就需要一个人或工具来在帮助你做筛选给出意见，当然推荐系统就能给你解决了。</p>
+<p>在互联网时代，信息是爆炸的，对于信息生产者来说如何让自己的信息脱颖而出就会有很大难度。在<strong>搜索引擎</strong>会有一个<a href="https://zh.wikipedia.org/wiki/%E9%A9%AC%E5%A4%AA%E6%95%88%E5%BA%94" target="_blank" rel="noopener"><em>马太效应</em></a>的问题，但<strong>推荐引擎</strong>因为<a href="https://zh.wikipedia.org/wiki/%E9%95%BF%E5%B0%BE" target="_blank" rel="noopener"><em>长尾理论</em></a>却可以帮助信息生产者发挥很大的价值。这里突然抛出两个名词你可能完全不知道我在说什么，下面我就来解释一下为什么会造成这种情况。<br><img src="https://pic2.zhimg.com/v2-d3938d5cc7fd4acf057c25abb9e829f9_r.jpg" alt="googel点击热力图"><br>这张是谷歌搜索引擎结果页面的点击热力图。图中越红的部分就是点击最多的，颜色越深点击的也越少。图中就反映了人们只会关注最流行的对象（第一页靠前内容），冷门的东西则很少关注（后几页内容），导致很多信息被忽略。这也是为什么Google和百度广告为什么这么赚钱，企业为什么要做<a href="https://zh.wikipedia.org/wiki/%E6%90%9C%E5%B0%8B%E5%BC%95%E6%93%8E%E6%9C%80%E4%BD%B3%E5%8C%96" target="_blank" rel="noopener">SEO</a>或<a href="https://zh.wikipedia.org/wiki/%E6%90%9C%E5%B0%8B%E5%BC%95%E6%93%8E%E8%A1%8C%E9%8A%B7" target="_blank" rel="noopener">SEM</a>提升排名。</p>
+<p>与<strong>马太效应</strong>相对的则是<strong>长尾理论</strong>，讲的就是那些被忽略的有效信息虽然曝光少，但胜在量多啊！维基百科和百度都给到的是亚马逊的例子。亚马逊有10万种图书，假如《咸鱼人X的献身》最畅销能卖10万本，那剩下的9万9千本哪怕每种只卖掉1本，几年后这些不畅销书带来的利润和畅销书一样多了。这个理论听起来很不错，而关键点在于如何让不畅销书能卖掉是关键，这时就需要推荐系统了。一方面帮助用户发现了自己有价值的信息，另一方面也让信息生产者的信息有效的被展现了。总之就是把遗漏的信息与可能需要的人进行匹配，进而创造价值。</p>
+<p>了解了推荐系统是干什么的（解决信息过载），现在来简单介绍它是如何工作的。</p>
+<p>设想一个场景，你想吃鸭脖，但是网上的鸭脖品牌很多你又不知道那种好吃，接下来你可能就会以以下几种方式来最终决定吃什么品牌的鸭脖：</p>
+<ul>
+<li>向朋友咨询，他们吃过哪些品牌并推荐给你。</li>
+<li>你喜欢吃蒜蓉味的，于是你去搜有这种口味的品牌。</li>
+<li>查看销量排行榜，看销量比较高的几个品牌。进一步就是看看和你一样喜欢吃鸭脖的网友有买了哪些品牌。</li>
+</ul>
+<p>其实这三种方法正对应着推荐系统的三种方式，社会化推荐、基于内容推荐和协同过滤（如果不太明白，后面会专门介绍）。</p>
+ <figure class="highlight plain"><figcaption><span>&#123;cmd</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+--------+   +------------+    +-------+</span><br><span class="line">|        |   |your friends|    |       |</span><br><span class="line">|        |   +------------+    |       |</span><br><span class="line">|        |   |  history   |    |  duck |</span><br><span class="line">|   you  |&lt;--|information |--&gt; |       |</span><br><span class="line">|     &#123;d&#125;|   +------------+    |  neck |</span><br><span class="line">|        |   |registration|    |       |</span><br><span class="line">|        |   |   message  |    |       |</span><br><span class="line">+---+----+   +------------+    +-------+</span><br></pre></td></tr></table></figure>
+<p>  上图即是推荐系统常用的3种联系用户与物品的方式，好友、历史兴趣、注册信息。</p>
+<h2 id="推荐系统的应用"><a href="#推荐系统的应用" class="headerlink" title="推荐系统的应用"></a>推荐系统的应用</h2><p>推荐系统已经诞生了很久，他在很多方面都有很应用，下面就是一些成功应用的代表性的网站和服务的介绍，很多我们生活中其实都已经见到过，当然他也不局限于下面这些领域。</p>
+<ol>
+<li>电子商务网站，代表网站就是亚马逊了。曾被 RWW（读写网）称为“推荐系统之王”。他拥有相关商品推荐和个性化推荐两套系统，而其相较于其他电商网站最大的优势就在于自己的个性化推荐系统。</li>
+<li>电影和视频网站，代表网站即Netflix。它非常重视个性化推荐系统，06年举办了著名的Netflix prize 推荐系统比赛。和亚马逊一样，也是基于物品的推荐算法，即给用户推荐和他们曾经喜欢的电影相似的电影。</li>
+<li>个性化音乐网络电台，国内的豆瓣FM和国外的Pandora等。但是他们技术不太一样，例如Pandora的算法主要基于内容（旋律、节奏、编曲、歌词等），而豆瓣（因为豆瓣未公开算法，但根据广大网友总结来看）更多考虑用户行为，比如用户对电台本身的“红心”， “垃圾”， “跳过”这些数据。</li>
+<li>社交网络，当然是Facebook和Twitter。他们会利用用户社交信息对用户个性化推荐，比如Facebook推出的instant personalization会根据用户好友喜欢的信息，给用户推荐他们好友喜欢的物品。其次还会给你推荐好友，让你花更多时间在网站上。</li>
+<li>基于位置的服务，比如美团、饿了么等软件就是基于你当前位置，给你推荐餐饮服务。</li>
+<li>个性化广告，广告是互联网公司的生存之本。很多互联网的盈利都来源于广告，而广告的CPC、CPM直接影响了互联网公司的收入。在微信朋友圈和微博的信息流中，你总会看到一些广告，而这些广告都是基于你的个人信息而推荐过来的，会大大增加广告的点击率。</li>
+</ol>
+<h2 id="推荐系统评测"><a href="#推荐系统评测" class="headerlink" title="推荐系统评测"></a>推荐系统评测</h2><p>推荐系统在很多领域都有很大的发挥作用，但什么才是好的推荐系统呢？最开始人们把推荐系统的评判标准认为是能做出准确的预测。但有一个问题，推荐的如果是既定的事实，那么还有意义吗？比如买了狗的人，推荐他买狗粮。虽然预测的结果是准确的，但不能说这个推荐系统就好。</p>
+<p>所以判定标准应该不仅仅是能准确预测行为，更能扩展用户的视野，帮助其发现那些他们可能感兴趣，但不那么容易发现的东西。而推荐系统一般都是由三方所参与的：用户、物品提供者和提供推荐系统的网站。所以好的推荐系统应该在推荐的同时收集用户的反馈，并不断完善用户与网站的交互，同时提高网站的收入，是一个三方共赢的系统。</p>
+<p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g03p1x6ehoj207606t3yr.jpg" alt="推荐系统参与者"></p>
+<p>我们可以用离线实验（历史用户数据）、用户调查(少量用户内测)和在线实验（A/B test）来对比推荐系统与之前算法的好坏。其中这些方法常用到的指标有<strong>用户满意度</strong>、<strong>预测准确度</strong>、<strong>覆盖率</strong>、<strong>多样性</strong>、<strong>新颖性</strong>、<strong>惊喜度（serendipity）</strong>、<strong>信任度</strong>、<strong>实时性</strong>、<strong>健壮性</strong>、<strong>商业目标</strong>等。</p>
+<p><strong>预测准确度</strong>可以说是一个很重要的指标，尤其是对离线系统的测评。但根据离线的推荐算法研究方向不同又有一些区别。</p>
+<ul>
+<li><p><strong>评分预测</strong><br>很多网站提供一个用户打分功能，知道了用户对物品的历史评价，就可以从中学习用户的兴趣模型，并预测该用户在他没评分的物品时，会给多少分。其准去度使用MAE，RMSE，其中RMSE加大了对测不准的惩罚，认为其对系统评测更加严格。</p>
+</li>
+<li><p><strong>TopN推荐</strong><br>网站在提供推荐服务时，一般是给用户一个个性化的推荐列表，这种推荐叫做TopN推荐。 TopN推荐的预测准确率一般通过准确率（precision）/召回率（recall）度量。 </p>
+</li>
+</ul>
+<p>现在对上面一些评测指标做些总结：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>离线实验</th>
+<th>问卷调查</th>
+<th>在线实验 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户满意度</td>
+<td>×</td>
+<td>√</td>
+<td>○ </td>
+</tr>
+<tr>
+<td>预测准确度</td>
+<td>√</td>
+<td>√</td>
+<td>× </td>
+</tr>
+<tr>
+<td>覆盖率</td>
+<td>√</td>
+<td>√</td>
+<td>√ </td>
+</tr>
+<tr>
+<td>多样性</td>
+<td>○</td>
+<td>√</td>
+<td>○ </td>
+</tr>
+<tr>
+<td>新颖性</td>
+<td>○</td>
+<td>√</td>
+<td>○ </td>
+</tr>
+<tr>
+<td>惊喜度</td>
+<td>×</td>
+<td>√</td>
+<td>×</td>
+</tr>
+</tbody>
+</table>
+<p>所以不同的指标需要不同的方法来收集，在上线新的推荐系统时，一般都是三个方法都做一遍，确保真的万无一失了再上线。</p>
+<p>最后评测推荐系统中还需要考虑评测维度，比如一个推荐算法， 虽然整体性能不好，但可能在某种情况下性能比较好，而增加评测维度的目的就是知道一个算法在什么情况下性能最好。下面是长用的三个维度：</p>
+<ol>
+<li><strong>用户维度</strong> 主要包括用户的人口统计学信息、活跃度以及是不是新用户等。 </li>
+<li><strong>物品维度</strong> 包括物品的属性信息、流行度、平均分以及是不是新加入的物品等。</li>
+<li><strong>时间维度</strong> 包括季节，是工作日还是周末，是白天还是晚上等。</li>
+</ol>
+<p>如何评判一个推荐系统好坏终于说完了，你看多复杂，要考虑很多很多的因素，简直让人抓狂。但按标准做出来的效果，当然也是让人十分满意的。下面将继续深入细节来一点一点学习推荐系统。</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

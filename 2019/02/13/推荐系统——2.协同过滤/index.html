@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      推荐系统——协同过滤 | 垃圾中转站 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="一位不愿透漏姓名的木公鼠">
+    
+    
+
+    <meta name="description" content="#协同过滤（Collaborative Filtering）关于推荐，不得不说协同过滤算法，它是一种仅仅基于用户行为数据而设计的推荐算法。再解释一下协同过滤就是，指用户可以齐心协力，通过不断地和网站互动，使自己的推荐列表能够不断过滤掉自己不感兴趣的物品，从而越来越满足自己的需求。深入研究的话它还是有很多变种的，比如基于邻域的方法（neighborhood-based）、隐语义模型 （latent">
+<meta name="keywords" content="推荐系统，协同过滤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐系统——协同过滤 | 垃圾中转站">
+<meta property="og:url" content="http://yoursite.com/2019/02/13/推荐系统——2.协同过滤/index.html">
+<meta property="og:site_name" content="垃圾中转站">
+<meta property="og:description" content="#协同过滤（Collaborative Filtering）关于推荐，不得不说协同过滤算法，它是一种仅仅基于用户行为数据而设计的推荐算法。再解释一下协同过滤就是，指用户可以齐心协力，通过不断地和网站互动，使自己的推荐列表能够不断过滤掉自己不感兴趣的物品，从而越来越满足自己的需求。深入研究的话它还是有很多变种的，比如基于邻域的方法（neighborhood-based）、隐语义模型 （latent">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g04ntxp5sbj20kk0c374p.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g04qlyza13j20i40c0wen.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g06xfvbtdpj20oi0dpq3m.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g05tayn6fzj20s90g0jth.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g05zd0tx4yj20q40dj74z.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g0756jc3kfj20o20ca0t3.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g074mik1vnj20la0cc0tb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g077m140ugj20cf099glm.jpg">
+<meta property="og:updated_time" content="2019-02-21T03:57:34.415Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="推荐系统——协同过滤 | 垃圾中转站">
+<meta name="twitter:description" content="#协同过滤（Collaborative Filtering）关于推荐，不得不说协同过滤算法，它是一种仅仅基于用户行为数据而设计的推荐算法。再解释一下协同过滤就是，指用户可以齐心协力，通过不断地和网站互动，使自己的推荐列表能够不断过滤掉自己不感兴趣的物品，从而越来越满足自己的需求。深入研究的话它还是有很多变种的，比如基于邻域的方法（neighborhood-based）、隐语义模型 （latent">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g04ntxp5sbj20kk0c374p.jpg">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">垃圾中转站</a></h1>
+        <hr class="panel-cover__divider">
+
+        
+        <p class="panel-cover__description">
+          三里桥分站
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">推荐系统——协同过滤</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2019-02-13" class="post-meta__date date">2019-02-13</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/推荐系统，协同过滤/">推荐系统，协同过滤</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>#协同过滤（Collaborative Filtering）<br>关于推荐，不得不说协同过滤算法，它是一种仅仅基于用户行为数据而设计的推荐算法。再解释一下协同过滤就是，指用户可以齐心协力，通过不断地和网站互动，使自己的推荐列表能够不断过滤掉自己不感兴趣的物品，从而越来越满足自己的需求。深入研究的话它还是有很多变种的，比如基于邻域的方法（neighborhood-based）、隐语义模型 （latent factor model）、基于图的随机游走算法（random walk on graph）等。业界普遍应用的还是基于领域的方法，本文也仅介绍该方法。</p>
+<h2 id="基于邻域的协同过滤-Neighborhood-based-collaborative-filtering"><a href="#基于邻域的协同过滤-Neighborhood-based-collaborative-filtering" class="headerlink" title="基于邻域的协同过滤(Neighborhood-based collaborative filtering)"></a>基于邻域的协同过滤(Neighborhood-based collaborative filtering)</h2><hr>
+<p>基于邻域的协同过滤下也有几种不同，分别是基于用户的协同过滤算法(user-based collaboratIve filtering)，和基于物品的协同过滤算法(item-based collaborative filtering)。简单的说就是：人以类聚，物以群分。</p>
+<h3 id="基于用户的协同过滤算法-user-based-collaboratIve-filtering"><a href="#基于用户的协同过滤算法-user-based-collaboratIve-filtering" class="headerlink" title="基于用户的协同过滤算法(user-based collaboratIve filtering)"></a>基于用户的协同过滤算法(user-based collaboratIve filtering)</h3><p>从字面意思就是给用户推荐和他兴趣相似的其他用户喜欢的物品。举个实际例子就是，A、B两个用户都购买了辣条,虾条,薯条三种零食，并且给出了5星的好评。那么A和B就属于同一类用户。可以将A买过的零食山楂条也推荐给用户B。<br><img src="https://ws1.sinaimg.cn/large/a462f558gy1g04ntxp5sbj20kk0c374p.jpg" alt="基于用户的协同过滤"><br>但该算法也有明显的缺点，随着用户数的增加。计算相似度会变得异常的困难。为此，对于大型电商来说该方法计算成本过高，所以推出了基于物品的协同过滤算法。</p>
+<h3 id="基于物品的协同过滤算法-item-based-collaborative-filtering"><a href="#基于物品的协同过滤算法-item-based-collaborative-filtering" class="headerlink" title="基于物品的协同过滤算法(item-based collaborative filtering)"></a>基于物品的协同过滤算法(item-based collaborative filtering)</h3><p>基于物品的协同过滤算法 这种算法给用户推荐和他之前喜欢的物品相似的物品。 同样是例子，用户A同时购买了辣条和薯条，那么说明辣条和薯条的相关度较高。当用户B也购买了辣条时，可以推断他也有购买薯条的需求。<br><img src="https://ws1.sinaimg.cn/large/a462f558gy1g04qlyza13j20i40c0wen.jpg" alt="基于物品的协同过滤"></p>
+<p>总结一下，就是充分利用集体智慧在大量的用户行为数据中收集规律，帮助人们得到统计意义上的推荐。他有两个基本内核，</p>
+<ol>
+<li>兴趣相近的人对相同的东西也可能感兴趣。</li>
+<li>人们会对与已购买的东西相似的更感兴趣。</li>
+</ol>
+<h4 id="两种算法对比"><a href="#两种算法对比" class="headerlink" title="两种算法对比"></a>两种算法对比</h4><p>下面是两种算法的一个直观对比</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th>User-based</th>
+<th>Item-based</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>性能   | 适用于用户较少的场合，如果用户很多，计算用户相似度矩阵代价很大 |适用于物品数明显小于用户数的场合，如果物品很多（网页），计算物品相似度矩阵代价很大<br>领域   |时效性较强，用户个性化兴趣不太明显的领域| 长尾物品丰富，用户个性化需求强烈的领域<br>实时性 |用户有新行为，不一定造成推荐结果的立即变化 |用户有新行为，一定会导致推荐结果的实时变化<br>冷启动 |在新用户对很少的物品产生行为后，不能立即对他进行个性化推荐，因为用户相似度表是每隔一段时间离线计算的  新物品上线后一段时间，一旦有用户对物品产生行 为，就可以将新物品推荐给和对它产生行为的用户 兴趣相似的其他用户 |新用户只要对一个物品产生行为，就可以给他推 荐和该物品相关的其他物品 但没有办法在不离线更新物品相似度表的情况 下将新物品推荐给用户<br>推荐理由 |很难提供令用户信服的推荐解释 |利用用户的历史行为给用户做推荐解释，可以令用户比较信服 </p>
+<p>以上两种算法都是比较古老的算法，基于模型(model based)的协同过滤是目前最主流的协同过滤类型了，我们的一大堆机器学习算法也可以在这里找到用武之地。下面我们就重点介绍基于模型的协同过滤。</p>
+<h2 id="基于隐语义模型的协同过滤推荐-Latent-factor-model-collaboratIve-filtering"><a href="#基于隐语义模型的协同过滤推荐-Latent-factor-model-collaboratIve-filtering" class="headerlink" title="基于隐语义模型的协同过滤推荐(Latent factor model collaboratIve filtering)"></a>基于隐语义模型的协同过滤推荐(Latent factor model collaboratIve filtering)</h2><hr>
+<p>隐语义模型（Latent Factor Model），其核心思想就是通过隐含特征联系用户兴趣和物品。过程分为三个部分，将物品映射到隐含分类，确定用户对隐含分类的兴趣，然后选择用户感兴趣的分类中的物品推荐给用户。它是基于用户行为统计的自动聚类。主流的方法可以分为：用关联算法，矩阵分解等。</p>
+<p>LFM通过如下公式计算用户u对物品i的兴趣：<br>$$<br>Preference(u,i)=r_{ui}=p_u^Tq_i=\sum_{f=1}^Fp_{u,k}q_{i,k}<br>$$</p>
+<h4 id="1-关联算法"><a href="#1-关联算法" class="headerlink" title="1. 关联算法"></a>1. 关联算法</h4><p>一般我们可以找出用户购买的所有物品数据里频繁出现的项集活序列，来做频繁集挖掘，找到满足支持度阈值的关联物品的频繁N项集或者序列。如果用户购买了频繁N项集或者序列里的部分物品，那么我们可以将频繁项集或序列里的其他物品按一定的评分准则推荐给用户，这个评分准则可以包括支持度，置信度和提升度等。著名的啤酒与尿布的Apriori算法，就是常见的一种关联算法,但因为算法的时间复杂度较高，生产环境常用改进的FP Growth算法。</p>
+<ul>
+<li><strong>apriori算法</strong><br>Apriori算法是常用的用于挖掘出数据关联规则的算法，它用来找出数据值中频繁出现的数据集合，那个数据集合被称为频繁项集。当然频繁项集是有评估标准的，其中apriori采用支持度来评价，<strong>支持度</strong>就是几个关联的数据在数据集中出现的次数占总数据集的比重，有些教程会把支持度换成出现次数便于写算法，实际效果一样。支持度高，不一定是频繁项集，但低的话肯定不是。<br><img src="https://ws1.sinaimg.cn/large/a462f558gy1g06xfvbtdpj20oi0dpq3m.jpg" alt=""><br>如图上具体做法是先扫描数据得出候选1项集及对应的支持度，去掉低于支持度的1项集，得到频繁1项集。然后对剩下的频繁1项集进行连接，得到候选的频繁2项集，筛选去掉低于支持度的候选频繁2项集，得到真正的频繁二项集，以此类推，迭代下去，直到无法找到频繁k+1项集为止，对应的频繁k项集的集合即为最大频繁项集。</li>
+</ul>
+<p>缺点很明显，每次计算频繁项集都需要进行一次数据的I/O,时间效率较低；优点就是易编码实现。</p>
+<p>详细了解可以看论文<a href="http://rakesh.agrawal-family.com/papers/vldb94apriori.pdf" target="_blank" rel="noopener">Fast Algorithms for Mining Association Rules</a></p>
+<ul>
+<li><strong>FP Growth算法</strong><br>是对apriori算法的一种改进，通过两次扫描数据得到项头表和非频繁一项集排序表，构建fp-tree,然后从项头表的底部项依次向上找到项头表项对应的条件模式基。从条件模式基递归挖掘得到项头表项的频繁项集。如下图</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g05tayn6fzj20s90g0jth.jpg" alt=""><br>FP Tree算法改进了Apriori算法的I/O瓶颈，巧妙的利用了树结构。只需要两次扫描即可，是一种用空间换时间的方法。</p>
+<h4 id="2-矩阵分解法"><a href="#2-矩阵分解法" class="headerlink" title="2. 矩阵分解法"></a>2. 矩阵分解法</h4><p>这个方法也是比较不错的，在吴恩达的机器学习课程中介绍的协同过滤就是用的矩阵分解。矩阵分解针对的场景主要是，我们已经有用户对某些商品进行了打分，目标是预测出用户对未打分的商品的评分。类似下面的用户物品评分表：</p>
+<table>
+<thead>
+<tr>
+<th>用户\物品</th>
+<th>物品1</th>
+<th>物品2</th>
+<th>物品3</th>
+<th>物品4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户1</td>
+<td>3</td>
+<td>5</td>
+<td>-</td>
+<td>1     </td>
+</tr>
+<tr>
+<td>用户2</td>
+<td>2</td>
+<td>-</td>
+<td>4</td>
+<td>-</td>
+</tr>
+<tr>
+<td>用户3</td>
+<td>-</td>
+<td>4</td>
+<td>-</td>
+<td>-           </td>
+</tr>
+<tr>
+<td>用户4</td>
+<td>2</td>
+<td>-</td>
+<td>1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>用户5</td>
+<td>-</td>
+<td>1</td>
+<td>-</td>
+<td>4          </td>
+</tr>
+</tbody>
+</table>
+<p>此时就是一个5个用户和4个物品对应的评分的矩阵$M$<br><strong>奇异值分解——SVD</strong><br>基于矩阵分解的就思想来源于SVD，SVD是将一个$m\times n$的矩阵$M$分解成三个矩阵，如下：<br>$$<br>M_F=U_{m \times k}\Sigma_{k \times k}V_{k \times n}^T<br>$$<br>而其中的奇异值$\Sigma_{k \times k}$下降特别快，即可以用前k个值来近似与矩阵$M$,大大减少了计算。但在实际中，分解成三个矩阵计算量仍然巨大,而且面对稀疏矩阵也无法使用SVD。但是分解矩阵这个思路却没有问题，于是有了改进的FunkSVD算法，以及更加完善的BaisSVD等。</p>
+<ul>
+<li><p><strong>FunkSVD算法</strong><br>现在对矩阵只进行2个矩阵分解，即从隐语义模型思想来做矩阵分解<br>$$<br>M_{m \times n}= P_{m \times k}\cdot Q_{n \times k}^T<br>$$<br>分解的两个矩阵中的k可以看做隐性特征因子，如下图<br><img src="https://ws1.sinaimg.cn/large/a462f558gy1g05zd0tx4yj20q40dj74z.jpg" alt=""><br>实际中我们并不知道矩阵中哪个是代表口感、包装或者价格，但他们是存在于潜在的语义空间中的，所以其可解释性较差。<br>这里如何求解P和Q呢？如果熟悉机器学习或者最优化问题就比较简单了，这里用到的是梯度下降法，来优化损失函数的方式近似求解。具体如下，<br>$$<br>\sum\limits_{i,j}(m_{ij}-p_jq_i^T)^2<br>$$<br>某用户的真实评分是$m_{ij}$,其中评分预测值为$p_j\cdot q_i^T$只要我们能够最小化上面的式子，并求出极值所对应的$p_i, q_j$,最终就可以得到矩阵$P$和$Q$,则对于矩阵$M$任意一个空白评分的位置，就可以通过$p_j\cdot q_i^T$方法预测。<br>最后为了防止过拟合加上L2正则项，因此最终的优化目标函数为<br>$$<br>\underbrace{arg\;min}_{p_i,q_j}\;\sum\limits_{i,j}(m_{ij}-p_iq_j^T)^2 + \lambda(||p_i||_2^2 + ||q_j||_2^2 )<br>$$<br>其中λ为正则化系数，需要调参。最后通过梯度下降法来进行优化得到结果。其中$p_i, q_j$的迭代公式为：<br>$$<br>p_i = p_i + \alpha((m_{ij}-p_iq_j^T)q_j - \lambda p_i)\<br>q_j =q_j +  \alpha((m_{ij}-p_iq_j^T)p_i - \lambda q_j)<br>$$</p>
+</li>
+<li><p><strong>BiasSVD算法</strong><br>由于影响一个用户对一个物品的评分的因素包括：用户本人的口味，用户的评分标准（是否严格），物品本身的质量，这时就需要增加偏置项，来抵消带来的影响。<br>$$<br>M_{bias} = OverallMean + BiasU + BiasI + P\cdot Q^T<br>$$<br>OverallMean表示所有物品的平均分，BiasU表示用户评分偏离OverallMean的程度（即用户的评价标准严格程度），BiasI表示电影评分偏离OverallMean的程度，（即物品本身质量的好坏）P，Q意思不变。<br>最终的优化函数如下：<br>$$<br>\underbrace{arg\;min}_{p_i,q_j}\;\sum\limits_{i,j}(m_{ij}-\mu-b_i-b_j-p_iq_j^T)^2 + \lambda(||p_i||_2^2 + ||q_j||_2^2 + ||b_i||_2^2 + ||b_j||_2^2)<br>$$<br>系统平均分为μ,第i个用户的用户偏置项为$b_i$,而第j个物品的物品偏置项为$b_j$,同样采用梯度下降法求解。</p>
+</li>
+<li><p><strong>SVD++</strong><br>反正就是越改越复杂，这个就是在之前bais的基础之上，又增加了一个隐式反馈。啥意思呢？就是用户给这物品打分，说明他对这物品有过行为了。评分的行为从侧面反映了用户的喜好，可以将这样的反映通过隐式参数的形式体现在模型中。<br>$$<br>M_{++} = BiasU + BiasI + q_j^T(p_i + |N(i)|^{\frac{1}{2}}\sum_{s\in N_i}y_s)<br>$$<br>其中，$|N(i)|$表示用户的行为物品集,而引入$|N(i)|^{\frac{1}{2}}$是为了消除不同$|N(i)|$个数引起的差异。这个用户$i$对某个物品$j$对应的隐式反馈修正的评分值为$C_{ij}$,那么该用户所有的评分修正值为$|N(i)|^{\frac{1}{2}}\sum_{s\in N_i}C_{sj}$, 之后将$C_{ij}$表示为$q_j^Ty_s$形式.<br>想要详细了解SVD++可以看Koren写的<a href="https://www.cs.rochester.edu/twiki/pub/Main/HarpSeminar/Factorization_Meets_the_Neighborhood-_a_Multifaceted_Collaborative_Filtering_Model.pdf" target="_blank" rel="noopener">基于邻近的矩阵分解协同过滤</a></p>
+</li>
+</ul>
+<p>这些基本上主流的矩阵分解方法。最后在总结下矩阵分解法的一些优缺点</p>
+<ul>
+<li><strong>优点：</strong> <ul>
+<li>实现起来比较容易，用梯度下降求解即可。</li>
+<li>改进方向多，比如上述提到的bias和svd++，还有根据时间捕捉兴趣漂移的方法等。</li>
+</ul>
+</li>
+<li><strong>缺点：</strong><ul>
+<li>计算量仍然很大，需要先把参数离线训练好，才能线上实时预测。</li>
+<li>推荐结果不具有很好的可解释性，分解出来的用户和物品矩阵的每个维度无法和现实生活中的概念来解释，无法用现实概念给每个维度命名，只能理解为潜在语义空间。</li>
+</ul>
+</li>
+</ul>
+<h3 id="基于图模型的协同过滤推荐（Graph-based-model-collaboratIve-filtering）"><a href="#基于图模型的协同过滤推荐（Graph-based-model-collaboratIve-filtering）" class="headerlink" title="基于图模型的协同过滤推荐（Graph-based model collaboratIve filtering）"></a>基于图模型的协同过滤推荐（Graph-based model collaboratIve filtering）</h3><hr>
+<p>用户行为很容易用二分图表示，因此很多图的算法都可以用到推荐系统中。<br><img src="https://ws1.sinaimg.cn/large/a462f558gy1g0756jc3kfj20o20ca0t3.jpg" alt=""></p>
+<p>令$G(V，E)$表示用户物品二分图，接下来的就是基于二分图为用户进行推荐，那么给用户u推荐物品就可以转化为度量用户顶点$u_v$和$V_u$没有直接边相连的顶点在图上的相关性，相关性越高的物品在推荐列表上的权重就越高，推荐位置就越靠前。</p>
+<p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g074mik1vnj20la0cc0tb.jpg" alt=""></p>
+<p>举一个简单的例子，如上图用户A和物品c、e没有边相连，但是用户A和物品c有1条长度为3的路径相连，用户A和物品e有2条长度为3的路径相连。那么，顶点A与e之间的相关性要高于顶点A与c，因而物品e在用户A的推荐列表中应该排在物品c之前，因为顶点A与e之间有两条路径——（A, b, C, e）和（A, d, D, e）。其中，（A, b, C, e）路径经过的顶点的<strong>出度</strong>（对有向图来说即顶点上连出去了几根线，<strong>入度</strong>即顶点连入了几根线）为（3, 2, 2, 2），而（A, d, D, e）路径经过的顶点的出度为（3, 2, 3, 2）。因此，（A, d, D, e）经过了一个出度比较大的顶点D，所以（A, d, D, e）对顶点A与e之间相关性的贡献要小于（A, b, C, e）。</p>
+<p>图中顶点之间的相关性有很多种表示方法，下面就说一说基于随机游走的personalRank算法。</p>
+<h4 id="personalRank算法"><a href="#personalRank算法" class="headerlink" title="personalRank算法"></a>personalRank算法</h4><p>personalRank算法是国内某书主编特例化了Topic-Senstive-pageRank算法，然后自己命名的。Topic-Senstive-pageRank算法又是改进的PageRank算法，为方便后面理解先介绍PageRank算法。PageRank就是计算每一个网页的PageRank值，然后根据这个值的大小对网页的重要性进行排序。<br><img src="https://ws1.sinaimg.cn/large/a462f558gy1g077m140ugj20cf099glm.jpg" alt=""><br>它的思想是模拟一个悠闲的上网者，上网者首先随机选择一个网页A打开，然后在这个网页上呆了几分钟后，跳转到该网页所指向的网页B，这样无所事事、漫无目的地在网页A,B,C,D间上跳来跳去，PageRank就是估计这个悠闲的上网者分布在各个网页上的概率。</p>
+<ul>
+<li><strong>pagerank的计算</strong><br>其本质上就是一个马尔科夫过程，如果收敛需要满足：图是强连通的，即从任意网页可以到达其他任意网页；所以他计算也就是转移矩阵M和转移过程$v$的乘积，即$V = M\cdot v$,</li>
+<li><strong>pagerank的问题</strong><ul>
+<li>终止点问题,走到某个点后无法继续下一步游走了</li>
+<li>陷阱问题，走到某一点后那一点下步还是返回该点，产生无限循环。</li>
+</ul>
+</li>
+</ul>
+<p>增加一个参数$\alpha$，改进以上问题后的迭代公式（概率转移形式）为$V^·=\alpha M\cdot v + (1-\alpha)\frac{e}{n}$<br>$\alpha$为查看当前网页的概率，$e$为单位向量，n是图所有节点的数目<br>现在写成一般形式：<br>$$<br>PR(i) = (1-\alpha)\frac{1}{N} + \alpha \sum_{j\in{in(i)}}\frac{PR(j)}{|out(j)|}<br>$$<br>其中$in(i)$是链入页面$i$的集合，i是目标网页，N是所有网页数，是页面$j$链出页面的数量,$\alpha$为查看当前网页的概率</p>
+<p>回到personalRank算法，PersonalRank跟PageRank的区别只是用$r_i$替换了$\frac{1}{N}$，也就是说从不同点开始的概率不同。u表示我们推荐的目标用户，这样使用上式计算的就是所有顶点相对于顶点u的相关度。<br>$$<br>PR(i) = (1-\alpha)r_i + \alpha \sum_{j\in{in(i)}}\frac{PR(j)}{|out(j)|}\<br>r_i = \left{\begin{matrix}<br> 1&amp;i = u \<br> 0&amp;i \neq u<br>\end{matrix}\right.<br>$$<br>公式中$PR(i)$表示物品$i$的访问概率(也即是物品$i$的权重)，$out(i)$表示物品节点$i$的出度。$\alpha$决定继续访问的概率。</p>
+<p>与PageRank随机选择一个点开始游走（也就是说从每个点开始的概率都是相同的）不同，如果我们要计算所有节点相对于用户u的相关度，则PersonalRank从用户u对应的节点开始游走，每到一个节点都以$1-\alpha$的概率停止游走并从u重新开始，或者以$\alpha$的概率继续游走，从当前节点指向的节点中按照均匀分布随机选择一个节点往下游走。这样经过很多轮游走之后，每个顶点被访问到的概率也会收敛趋于稳定，这个时候我们就可以用概率来进行排名。</p>
+<p>同样这个personalRank也可以写成矩阵转移的形式：<br>$$<br>r = (1-\alpha)r_0 + \alpha M^Tr<br>$$<br>其中M为用户物品二分图的转移矩阵$M(i,j) = \frac{1}{|out(j)|}$，矩阵形式可以大大加快计算。</p>
+<p>想更详细了解完整算的可看论文<a href="http://www-cs-students.stanford.edu/~taherh/papers/topic-sensitive-pagerank.pdf" target="_blank" rel="noopener">Topic-Sensitive PageRank</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="##总结"></a>##总结</h2><p>协同过滤作为一种经典的推荐算法种类，在工业界应用广泛，它的优点很多，模型通用性强，不需要太多对应数据领域的专业知识，工程实现简单，效果也不错。</p>
+<p>协同过滤最大的问题即使冷启动问题。推荐系统需要根据用户的历史行为和兴趣预测用户未来的行为和兴趣，因此大量的用户行为 数据就成为推荐系统的重要组成部分和先决条件。但是对于很多做纯粹推荐系统的网站 （比如Jinni和Pandora），或者很多在开始阶段就希望有个性化推荐应用的网站来说，如何在没有大量用户数据的情况下协同过滤就很难给到一个满意的结果。后面我们也将会讨论这类问题。</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

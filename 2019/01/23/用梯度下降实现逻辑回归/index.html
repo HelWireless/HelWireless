@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+       | 垃圾中转站 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="一位不愿透漏姓名的木公鼠">
+    
+    
+
+    <meta name="description" content="“””title: 用梯度下降实现逻辑回归date: 2018-09-09tag:  机器学习“””  实现梯度下降算法实现梯度下降算法，在小数据集中查找数据边界。 首先，可视化数据。 12345678910111213141516171819202122import matplotlib.pyplot as pltimport numpy as npimport pandas as pd#Som">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" | 垃圾中转站">
+<meta property="og:url" content="http://yoursite.com/2019/01/23/用梯度下降实现逻辑回归/index.html">
+<meta property="og:site_name" content="垃圾中转站">
+<meta property="og:description" content="“””title: 用梯度下降实现逻辑回归date: 2018-09-09tag:  机器学习“””  实现梯度下降算法实现梯度下降算法，在小数据集中查找数据边界。 首先，可视化数据。 12345678910111213141516171819202122import matplotlib.pyplot as pltimport numpy as npimport pandas as pd#Som">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/01/23/用梯度下降实现逻辑回归/output_3_0.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/23/用梯度下降实现逻辑回归/output_10_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/23/用梯度下降实现逻辑回归/output_10_2.png">
+<meta property="og:updated_time" content="2019-01-17T12:05:06.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" | 垃圾中转站">
+<meta name="twitter:description" content="“””title: 用梯度下降实现逻辑回归date: 2018-09-09tag:  机器学习“””  实现梯度下降算法实现梯度下降算法，在小数据集中查找数据边界。 首先，可视化数据。 12345678910111213141516171819202122import matplotlib.pyplot as pltimport numpy as npimport pandas as pd#Som">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/23/用梯度下降实现逻辑回归/output_3_0.png">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">垃圾中转站</a></h1>
+        <hr class="panel-cover__divider">
+
+        
+        <p class="panel-cover__description">
+          三里桥分站
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title"></h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2019-01-23" class="post-meta__date date">2019-01-23</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>“””<br>title: 用梯度下降实现逻辑回归<br>date: 2018-09-09<br>tag:</p>
+<ul>
+<li>机器学习<br>“””</li>
+</ul>
+<h1 id="实现梯度下降算法"><a href="#实现梯度下降算法" class="headerlink" title="实现梯度下降算法"></a>实现梯度下降算法</h1><p>实现梯度下降算法，在小数据集中查找数据边界。 首先，可视化数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment">#Some helper functions for plotting and drawing lines</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_points</span><span class="params">(X, y)</span>:</span></span><br><span class="line">    admitted = X[np.argwhere(y==<span class="number">1</span>)]</span><br><span class="line">    rejected = X[np.argwhere(y==<span class="number">0</span>)]</span><br><span class="line">    <span class="comment">## 取出第0个元素的第0个元素作为x轴位置，取出第0个元素的第1个元素作为y轴位置</span></span><br><span class="line">    <span class="comment">## 筛选出来的值类似于：</span></span><br><span class="line">    <span class="comment">## array([[[0.78, -0.06]],</span></span><br><span class="line">    <span class="comment">##        [[0.28, 0.29]],</span></span><br><span class="line">    <span class="comment">##             ...      ])</span></span><br><span class="line">    plt.scatter([s[<span class="number">0</span>][<span class="number">0</span>] <span class="keyword">for</span> s <span class="keyword">in</span> rejected], [s[<span class="number">0</span>][<span class="number">1</span>] <span class="keyword">for</span> s <span class="keyword">in</span> rejected], s = <span class="number">25</span>, color = <span class="string">'blue'</span>, edgecolor = <span class="string">'k'</span>)</span><br><span class="line">    plt.scatter([s[<span class="number">0</span>][<span class="number">0</span>] <span class="keyword">for</span> s <span class="keyword">in</span> admitted], [s[<span class="number">0</span>][<span class="number">1</span>] <span class="keyword">for</span> s <span class="keyword">in</span> admitted], s = <span class="number">25</span>, color = <span class="string">'red'</span>, edgecolor = <span class="string">'k'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">display</span><span class="params">(m, b, color=<span class="string">'g--'</span>)</span>:</span></span><br><span class="line">    plt.xlim(<span class="number">-0.05</span>,<span class="number">1.05</span>)</span><br><span class="line">    plt.ylim(<span class="number">-0.05</span>,<span class="number">1.05</span>)</span><br><span class="line">    x = np.arange(<span class="number">-10</span>, <span class="number">10</span>, <span class="number">0.1</span>)</span><br><span class="line">    plt.plot(x, m*x+b, color)</span><br></pre></td></tr></table></figure>
+<h2 id="读取与绘制数据"><a href="#读取与绘制数据" class="headerlink" title="读取与绘制数据"></a>读取与绘制数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">'data.csv'</span>, header=<span class="keyword">None</span>)</span><br><span class="line">X = np.array(data[[<span class="number">0</span>,<span class="number">1</span>]])</span><br><span class="line">y = np.array(data[<span class="number">2</span>])</span><br><span class="line">plot_points(X,y)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="output_3_0.png" alt="png"></p>
+<h2 id="实现基本函数"><a href="#实现基本函数" class="headerlink" title="实现基本函数"></a>实现基本函数</h2><p>实现以下基本函数。</p>
+<ul>
+<li>Sigmoid 激活函数</li>
+</ul>
+<p>$$\sigma(x) = \frac{1}{1+e^{-x}}$$</p>
+<ul>
+<li>输出（预测）公式</li>
+</ul>
+<p>$$\hat{y} = \sigma(w_1 x_1 + w_2 x_2 + b)$$</p>
+<ul>
+<li>误差函数</li>
+</ul>
+<p>$$Error(y, \hat{y}) = - y \log(\hat{y}) - (1-y) \log(1-\hat{y})$$</p>
+<ul>
+<li>更新权重的函数</li>
+</ul>
+<p>$$ w_i \longrightarrow w_i + \alpha (y - \hat{y}) x_i$$</p>
+<p>$$ b \longrightarrow b + \alpha (y - \hat{y})$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## np.log即代表ln</span></span><br><span class="line">np.log(np.e)</span><br></pre></td></tr></table></figure>
+<pre><code>1.0
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Activation (sigmoid) function</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output (prediction) formula</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">output_formula</span><span class="params">(features, weights, bias)</span>:</span></span><br><span class="line">    <span class="comment">## 输入值和权重均为行向量，所以点乘</span></span><br><span class="line">    <span class="comment">## 第一次写时忘记在外层添加 sigmoid 函数，=.=!!</span></span><br><span class="line">    <span class="keyword">return</span> sigmoid(np.dot(features, weights) + bias)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Error (log-loss) formula</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">error_formula</span><span class="params">(y, output)</span>:</span></span><br><span class="line">    <span class="comment">## np.log即代表np.ln</span></span><br><span class="line">    <span class="keyword">return</span> - y*np.log(output) - (<span class="number">1</span> - y)*np.log(<span class="number">1</span> - output)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Gradient descent step</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_weights</span><span class="params">(x, y, weights, bias, learnrate)</span>:</span></span><br><span class="line">    <span class="comment">## 先计算每个输入的预测值y_hat</span></span><br><span class="line">    y_hat = output_formula(x, weights, bias)</span><br><span class="line">    <span class="comment">## 提取 weights 和 bias 的偏导中相同的部分</span></span><br><span class="line">    d_error = -(y - y_hat)</span><br><span class="line">    </span><br><span class="line">    weights_update = weights - learnrate * d_error * x</span><br><span class="line">    bias_update = bias - learnrate * d_error</span><br><span class="line">    </span><br><span class="line">    <span class="comment">## 输出为元组</span></span><br><span class="line">    <span class="keyword">return</span> weights_update, bias_update</span><br></pre></td></tr></table></figure>
+<h2 id="训练函数"><a href="#训练函数" class="headerlink" title="训练函数"></a>训练函数</h2><p>通过所有数据来迭代梯度下降算法，用于多个 epoch。 绘制数据，并在运行算法时绘制出一些边界线。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="number">44</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 设置循环次数100次</span></span><br><span class="line">epochs = <span class="number">100</span></span><br><span class="line">learnrate = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(features, targets, epochs, learnrate, graph_lines=False)</span>:</span></span><br><span class="line">    </span><br><span class="line">    errors = []</span><br><span class="line">    n_records, n_features = features.shape</span><br><span class="line">    last_loss = <span class="keyword">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">## 按照正态分布随机生成权重，权重个数和输入的X的列数一致</span></span><br><span class="line">    <span class="comment">## scale 为方差，默认均值为0</span></span><br><span class="line">    weights = np.random.normal(scale=<span class="number">1</span> / n_features**<span class="number">.5</span>, size=n_features)</span><br><span class="line">    bias = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> range(epochs):</span><br><span class="line">        del_w = np.zeros(weights.shape)</span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> zip(features, targets):</span><br><span class="line">            output = output_formula(x, weights, bias)</span><br><span class="line">            error = error_formula(y, output)</span><br><span class="line">            weights, bias = update_weights(x, y, weights, bias, learnrate)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Printing out the log-loss error on the training set</span></span><br><span class="line">        out = output_formula(features, weights, bias)</span><br><span class="line">        loss = np.mean(error_formula(targets, out))</span><br><span class="line">        errors.append(loss)</span><br><span class="line">        <span class="keyword">if</span> e % (epochs / <span class="number">10</span>) == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">"\n========== Epoch"</span>, e,<span class="string">"=========="</span>)</span><br><span class="line">            <span class="keyword">if</span> last_loss <span class="keyword">and</span> last_loss &lt; loss:</span><br><span class="line">                print(<span class="string">"Train loss: "</span>, loss, <span class="string">"  WARNING - Loss Increasing"</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                print(<span class="string">"Train loss: "</span>, loss)</span><br><span class="line">            last_loss = loss</span><br><span class="line">            predictions = out &gt; <span class="number">0.5</span></span><br><span class="line">            accuracy = np.mean(predictions == targets)</span><br><span class="line">            print(<span class="string">"Accuracy: "</span>, accuracy)</span><br><span class="line">        <span class="keyword">if</span> graph_lines <span class="keyword">and</span> e % (epochs / <span class="number">100</span>) == <span class="number">0</span>:</span><br><span class="line">            display(-weights[<span class="number">0</span>]/weights[<span class="number">1</span>], -bias/weights[<span class="number">1</span>])</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">    <span class="comment"># Plotting the solution boundary</span></span><br><span class="line">    plt.title(<span class="string">"Solution boundary"</span>)</span><br><span class="line">    display(-weights[<span class="number">0</span>]/weights[<span class="number">1</span>], -bias/weights[<span class="number">1</span>], <span class="string">'black'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Plotting the data</span></span><br><span class="line">    plot_points(features, targets)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Plotting the error</span></span><br><span class="line">    plt.title(<span class="string">"Error Plot"</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Number of epochs'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Error'</span>)</span><br><span class="line">    plt.plot(errors)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<h2 id="真正训练算法"><a href="#真正训练算法" class="headerlink" title="真正训练算法"></a>真正训练算法</h2><p>运行该函数时，有以下内容：</p>
+<ul>
+<li>目前的训练损失与准确性的 10 次更新</li>
+<li>获取的数据图和一些边界线的图。 最后一个是黑色的。tip：随着遍历更多的 epoch ，线会越来越接近最佳状态。</li>
+<li>误差函数的图。 随着遍历更多的 epoch，它持续降低。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train(X, y, epochs, learnrate, <span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>========== Epoch 0 ==========
+Train loss:  0.7135845195381634
+Accuracy:  0.4
+
+========== Epoch 10 ==========
+Train loss:  0.6225835210454962
+Accuracy:  0.59
+
+========== Epoch 20 ==========
+Train loss:  0.5548744083669508
+Accuracy:  0.74
+
+========== Epoch 30 ==========
+Train loss:  0.501606141872473
+Accuracy:  0.84
+
+========== Epoch 40 ==========
+Train loss:  0.4593334641861401
+Accuracy:  0.86
+
+========== Epoch 50 ==========
+Train loss:  0.42525543433469976
+Accuracy:  0.93
+
+========== Epoch 60 ==========
+Train loss:  0.3973461571671399
+Accuracy:  0.93
+
+========== Epoch 70 ==========
+Train loss:  0.3741469765239074
+Accuracy:  0.93
+
+========== Epoch 80 ==========
+Train loss:  0.35459973368161973
+Accuracy:  0.94
+
+========== Epoch 90 ==========
+Train loss:  0.3379273658879921
+Accuracy:  0.94
+</code></pre><p><img src="output_10_1.png" alt="png"></p>
+<p><img src="output_10_2.png" alt="png"></p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

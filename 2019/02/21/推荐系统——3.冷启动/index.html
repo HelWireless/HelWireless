@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      推荐系统——协同过滤 | 垃圾中转站 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="一位不愿透漏姓名的木公鼠">
+    
+    
+
+    <meta name="description" content="冷启动分类 一般冷启动分为三类：用户冷启动、物品冷启动、系统冷启动。前两个从名字就能看出来，是缺少什么数据而难以个性化推荐的，而系统冷启动就厉害了，两者数据都很少还要做个性化推荐，这个其实靠算法没啥用，还是看营销团队水准，让更多用户在页面停留产生行为，为算法积累数据才是最重要的。 就通常来说，解决冷启动就是如何度过前期推荐不准确，然后慢慢收集信息，再逐步替换到现有的推荐系统。一般来说前期都是用一些">
+<meta name="keywords" content="推荐系统，冷启动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐系统——协同过滤 | 垃圾中转站">
+<meta property="og:url" content="http://yoursite.com/2019/02/21/推荐系统——3.冷启动/index.html">
+<meta property="og:site_name" content="垃圾中转站">
+<meta property="og:description" content="冷启动分类 一般冷启动分为三类：用户冷启动、物品冷启动、系统冷启动。前两个从名字就能看出来，是缺少什么数据而难以个性化推荐的，而系统冷启动就厉害了，两者数据都很少还要做个性化推荐，这个其实靠算法没啥用，还是看营销团队水准，让更多用户在页面停留产生行为，为算法积累数据才是最重要的。 就通常来说，解决冷启动就是如何度过前期推荐不准确，然后慢慢收集信息，再逐步替换到现有的推荐系统。一般来说前期都是用一些">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g0eyebj7bej20is0blt8w.jpg">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1668945-c85e3ba21e7364e9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2019-02-25T05:49:56.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="推荐系统——协同过滤 | 垃圾中转站">
+<meta name="twitter:description" content="冷启动分类 一般冷启动分为三类：用户冷启动、物品冷启动、系统冷启动。前两个从名字就能看出来，是缺少什么数据而难以个性化推荐的，而系统冷启动就厉害了，两者数据都很少还要做个性化推荐，这个其实靠算法没啥用，还是看营销团队水准，让更多用户在页面停留产生行为，为算法积累数据才是最重要的。 就通常来说，解决冷启动就是如何度过前期推荐不准确，然后慢慢收集信息，再逐步替换到现有的推荐系统。一般来说前期都是用一些">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g0eyebj7bej20is0blt8w.jpg">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">垃圾中转站</a></h1>
+        <hr class="panel-cover__divider">
+
+        
+        <p class="panel-cover__description">
+          三里桥分站
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">推荐系统——协同过滤</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2019-02-21" class="post-meta__date date">2019-02-21</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/推荐系统，冷启动/">推荐系统，冷启动</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <h1 id="冷启动分类"><a href="#冷启动分类" class="headerlink" title="冷启动分类"></a>冷启动分类</h1><hr>
+<p>一般冷启动分为三类：用户冷启动、物品冷启动、系统冷启动。前两个从名字就能看出来，是缺少什么数据而难以个性化推荐的，而系统冷启动就厉害了，两者数据都很少还要做个性化推荐，这个其实靠算法没啥用，还是看营销团队水准，让更多用户在页面停留产生行为，为算法积累数据才是最重要的。</p>
+<p>就通常来说，解决冷启动就是如何度过前期推荐不准确，然后慢慢收集信息，再逐步替换到现有的推荐系统。一般来说前期都是用一些替代方案，比如用热度排行榜、通过注册时让用户勾选相关标签、以及拉取用户其他渠道的信息（需要授权）、通过专家领域知识前期快速构建规则等。度过前期的数据稀少期后再换上之前的算法，逐步提高推荐的准确性。</p>
+<p>下面介绍一些冷启动常用到的一些方法，主要是为前期数据收集做准备。</p>
+<h1 id="冷启动常用方法"><a href="#冷启动常用方法" class="headerlink" title="冷启动常用方法"></a>冷启动常用方法</h1><hr>
+<h2 id="一、用户注册信息"><a href="#一、用户注册信息" class="headerlink" title="一、用户注册信息"></a>一、用户注册信息</h2><p>用户的注册信息分3种。</p>
+<ul>
+<li><p><strong>人口统计学信息：</strong> 包括用户的年龄、性别、职业、民族、学历和居住地。</p>
+</li>
+<li><p><strong>用户兴趣的描述：</strong> 让用户自己选择自己感兴趣的一些标签</p>
+</li>
+<li><p><strong>从其他网站导入的用户站外行为数据：</strong> 比如用户通过豆瓣、新浪微博的账号登录，就可以在得到用户同意的情况下获取用户在豆瓣或者新浪微博的一些行为数据和社交网络数据（现在有些app会扫描你已安装的应用，然后分析你已安装的app类型，然后得出你的一些基本信息来推荐）。</p>
+</li>
+</ul>
+<p>基于注册信息的个性化推荐流程基本如下：</p>
+<ol>
+<li>获取用户的注册信息；</li>
+<li>根据用户的注册信息对用户分类；</li>
+<li>给用户推荐他所属分类中用户喜欢的物品。（可以考虑单特征分类或者组合分类）</li>
+</ol>
+<p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g0eyebj7bej20is0blt8w.jpg" alt=""></p>
+<p>基于用户注册信息的推荐算法其核心问题是计算每种特征的用户喜欢的物品。也就是说，对于每种特征$f$，计算具有这种特征的用户对各个物品的喜好程度$p(f, i)$。<br>$$<br>p(f,i) = \frac{|N(i)\cap U(f)|}{N(i)+\alpha}<br>$$<br>其中$N(i)$是喜欢物品$i$的用户集合，$U(f)$是具有特征$f$的用户集合。$\alpha$参数的目的是解决数据稀疏，即一个东西只有一个人喜欢，那他的$p(f,i)$就是1了，所以需要加入一个较大的$\alpha$进行修正。</p>
+<p>如何理解上述公式呢，其实翻译成语言就是喜欢A的人中，具有特性a的所有人占喜欢A的人中的比例。在实例化一点就是，80个人喜欢吃虾条，但喜欢虾条的女生有30个，假设$\alpha$为20，则$p(f,i) = \frac{30}{80+20} = 0.3$,所以虾条的喜好程度是0.3。算法虽然有些粗糙，但也有一定的推荐效果，只是相对较差。</p>
+<h2 id="二、选择合适的物品启动用户的兴趣"><a href="#二、选择合适的物品启动用户的兴趣" class="headerlink" title="二、选择合适的物品启动用户的兴趣"></a>二、选择合适的物品启动用户的兴趣</h2><p>这种方式的推荐是让用户自我对物品进行评分或者反馈，然后根据用户的反馈提供个性化推荐。<br>一般来说，能够用来启动用户兴趣的物品需要具有以下特点：</p>
+<ul>
+<li>比较热门</li>
+<li>具有代表性和区分性</li>
+<li>启动物品集合需要有多样性</li>
+</ul>
+<p>以网易云音乐私人FM为例<br><img src="https://upload-images.jianshu.io/upload_images/1668945-c85e3ba21e7364e9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="网易云音乐推荐"><br>就是通过一些问题，来知道你的口味而去推荐。当然肯定前期是不精确的，是为了在数据缺少的情况下的过渡方案，随着用户行为增多在推荐算法计算下逐渐会有更精确的推荐。</p>
+<h2 id="三、利用物品的内容信息"><a href="#三、利用物品的内容信息" class="headerlink" title="三、利用物品的内容信息"></a>三、利用物品的内容信息</h2><p>就是新加入的物品我们如何将它有针对性的推荐出去。物品冷启动问题在新闻网站等时效性很强的网站中非常重要，因为这些网站时时刻刻都有新物品加入，而且每个物品必须能够再第一时间展现给用户，否则经过一段时间后，物品的价值就大大降低了。</p>
+<p>《推荐系统实践》这本书在这里了说的有些复杂，利用物品内容即查找物品的关键字，并与之匹配。物品会带有一定的属性，比如电影会有导演、演员、电影类型等。将这些属性组成向量，之后计算相似度即可得到两个物品的相似度。然后将新加入的物品推荐给用过相似的物品的用户。具体实现方法可以用TF-IDF或者主题模型等都可。</p>
+<h2 id="四、采用专家标注"><a href="#四、采用专家标注" class="headerlink" title="四、采用专家标注"></a>四、采用专家标注</h2><p>很多系统在建立的时候，既没有用户的行为数据，也没有充足的物品内容信息来计算物品相似度。这种情况下，很多系统都利用专家进行标注。<br>这方面主要参考国外的例子个性化网络电台Pandora和电影推荐网站Jinni。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>其实冷启动用户的兴趣都是阶段性的，等他们多次和系统进行交互后，用户的兴趣特征基本就十分明朗了。所以说，还是需要推荐系统能迅速捕捉用户的行为数据，及时做出反馈，推荐其所需要的物品，这样的推荐系统才是最有用的。</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

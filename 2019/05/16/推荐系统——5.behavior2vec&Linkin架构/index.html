@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      推荐系统（behavior2vec  and linkin 架构） | 垃圾中转站 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="一位不愿透漏姓名的木公鼠">
+    
+    
+
+    <meta name="description" content="behavior2vec介绍论文behavior2vec 作者认为现在推荐系统算法有那么一点点的问题，算法更多的是在预测点击率和评分。然而算法是为了服务业务，业务的最终的目的是为了转化率（付费），并不是说推荐给你了你点击是目的，能转化才是最终的目的。为此作者提出了behavior2vec来预测行为数据，更多的偏向付费行为来预测。 下面举个业务中产品的具体例子，一个用户很有可能在点击产品P1后有不同">
+<meta name="keywords" content="推荐系统， 算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐系统（behavior2vec  and linkin 架构） | 垃圾中转站">
+<meta property="og:url" content="http://yoursite.com/2019/05/16/推荐系统——5.behavior2vec&Linkin架构/index.html">
+<meta property="og:site_name" content="垃圾中转站">
+<meta property="og:description" content="behavior2vec介绍论文behavior2vec 作者认为现在推荐系统算法有那么一点点的问题，算法更多的是在预测点击率和评分。然而算法是为了服务业务，业务的最终的目的是为了转化率（付费），并不是说推荐给你了你点击是目的，能转化才是最终的目的。为此作者提出了behavior2vec来预测行为数据，更多的偏向付费行为来预测。 下面举个业务中产品的具体例子，一个用户很有可能在点击产品P1后有不同">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g30ylrdei2j20k406djrv.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g31ucrcu7qj20i30cojrv.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g31ufcuuadj20jy0e13yw.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g32a239fpqj20kr0d0jtd.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g32a3zib9dj20o50btmzd.jpg">
+<meta property="og:updated_time" content="2019-05-15T19:04:33.637Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="推荐系统（behavior2vec  and linkin 架构） | 垃圾中转站">
+<meta name="twitter:description" content="behavior2vec介绍论文behavior2vec 作者认为现在推荐系统算法有那么一点点的问题，算法更多的是在预测点击率和评分。然而算法是为了服务业务，业务的最终的目的是为了转化率（付费），并不是说推荐给你了你点击是目的，能转化才是最终的目的。为此作者提出了behavior2vec来预测行为数据，更多的偏向付费行为来预测。 下面举个业务中产品的具体例子，一个用户很有可能在点击产品P1后有不同">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a462f558gy1g30ylrdei2j20k406djrv.jpg">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">垃圾中转站</a></h1>
+        <hr class="panel-cover__divider">
+
+        
+        <p class="panel-cover__description">
+          三里桥分站
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">推荐系统（behavior2vec  and linkin 架构）</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2019-05-16" class="post-meta__date date">2019-05-16</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/推荐系统，-算法/">推荐系统， 算法</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <h1 id="behavior2vec介绍"><a href="#behavior2vec介绍" class="headerlink" title="behavior2vec介绍"></a>behavior2vec介绍</h1><p>论文<a href="https://in.ncu.edu.tw/~hhchen/academic_works/chen18-tkdd-b2v.pdf" target="_blank" rel="noopener">behavior2vec</a></p>
+<p>作者认为现在推荐系统算法有那么一点点的问题，算法更多的是在预测点击率和评分。然而算法是为了服务业务，业务的最终的目的是为了转化率（付费），并不是说推荐给你了你点击是目的，能转化才是最终的目的。为此作者提出了behavior2vec来预测行为数据，更多的偏向付费行为来预测。</p>
+<p>下面举个业务中产品的具体例子，一个用户很有可能在点击产品P1后有不同的原因去点击产品p2,然后便有下面三个可能的场景。第一种，产品p1和产品p2是一种能互相替代的产品（例如产品p1和p2是不同品牌的手机，vivo和oppo）。第二种情况，产品p2是产品p1的一种附属品（例如p1是相机，p2则是三脚架）。第三种情况，产品p1和产品p2是两种独立的产品，但是他们一起使用的话，效果会更好即相互补充的作用。（例如椅子和桌子）。现在大部分的推荐算法都能够计算两个产品之间的相似度距离，但很难分辨出两个产品之间的内在关系即可以处理第一种情况，对于第二和第三种情况表现的比较差。<br>我们很希望能够发现不同产品背后的隐藏的关系，Word2Vec被发现可以展示两个单词之间的语义联系（例如，国王：皇后$\approx$男人：女人），同样产品也可以利用这种向量化的方式，基于这样的想法，将对产品的行为进行了向量化就可以同样的展示不同产品背后的隐藏关系。</p>
+<h2 id="behavior2vec原理"><a href="#behavior2vec原理" class="headerlink" title="behavior2vec原理"></a>behavior2vec原理</h2><h3 id="参数定义"><a href="#参数定义" class="headerlink" title="参数定义"></a>参数定义</h3><p>假设一系列的对产品的购买和浏览记录的行为记录是$s={e_i,e_2,\cdot,e_{i-1},e_i,e_{i+1}}$ 我们预先定义一个窗口大小$w$,$C(e_i)$就是一个行为$e_i$的周围有多少个其他行为的集合，具体展现形式如下：<br>$$<br>C(e_i) = {e_{i-w}, e_{i-w+1}, /cdot ,e_{i+1}, e_{i+1},\dots, e_{i+w}}<br>$$</p>
+<p>下面给个具体例子，当w=3，e=5的时候前三个行为是${e_2,e_3,e_4}$后三个行为是{e_6,e_7,e_8}，所以$C(e_5)={e_2,e_3,e_4,e_6,e_7,e_8}$，对于e=2来说，它前面只有1个行为${e_1}$,所以$C(e_2)={e_1,e_3,e_4,e_5}$,类似情况$C(e_9)={e_6,e_7,e_8}$。</p>
+<p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g30ylrdei2j20k406djrv.jpg" alt=""></p>
+<p>对单词的分布概括是用world embedding称呼的，同样对于行为的分布概括，我们就用behavior embedding。此外，上下文信息用周边行为来代替。</p>
+<p>这样做的原因是，通常认为一个单词的上下文可以定义为这个单词附近的词。因此，当两个单词附近的词一样或者相近，那么这两个单词就可以认为也是相近的。同样的道理，假设有两种行为b1和b2,如果b1的周围行为集合和b2的周围行为集合是相近的，那么我们也就可以认为行为b1和b2也是相近的。这样就能用一个模型来预测一个行为他周围的其他行为与其他行为的周围行为的相似性，来判断这两个行为的相似性。</p>
+<h3 id="Behavior-Embedding-Model"><a href="#Behavior-Embedding-Model" class="headerlink" title="Behavior Embedding Model"></a>Behavior Embedding Model</h3><p>在给定的一个情景中，浏览商品的序列为$s={e_1,e_2,\dots,e_{i-1},e_{i},e_{i+1},\dots,e_{|s|}}$,其中|s|是序列的长度，我们定义这个概率函数是基于skip-gram模型的，有如下的表示：<br>$$<br>p(s) = \prod^{|s|}<em>{i=1}  \left(  \prod</em>{e_j\in C(e_i)}p(e_j|e_i;\theta)\right)<br>$$<br>$C(e_i)$返回了$e_i$产品前后行为信息，$e_i$是用户在产品i上的稠密行为矩阵，我们称它叫behavior embedding。最后我们假设，用户在产品i上的行为仅点击（浏览）和付费这两种。所以有$e_i \in {v_i(viewing), p_i(purchasing)}$这两种不同的行为在产品i上。我们称$v_i,p_i$为产品i的viewing embedding 和purchasing embedding。<br>我们将目标函数定义为概率函数的对数以移除连乘的影响。因此，目标是获得最大化概率函数对数的参数θ，方程定义如下：<br>$$<br>\theta^* = \underset{\theta}{argmax}\Sigma^{|s|}<em>{i=1} \Sigma</em>{\forall e_j \in C(e_i)}\log(p(e_j|e_i:\theta))<br>$$</p>
+<p>一般来说，world embedding 的$\theta$是由$w_i^{(I)}$和$w_i^{(O)}$组成的，对于每个单词i来说，它们分表代表着它的向量的输入和输出。我们这个由于有两个种行为，所以相应的有所变化，这里的$\theta$是由viewing embedding和purchasing embedding的输入输出向量组成的。即$e_i^{(I)}\in{V_i^{(I)},P_i^{(I)}}$以及$e_i^{(O)}\in{V_i^{(O)},P_i^{(O)}}$。因此$p(e_j|e_i;\theta)$的概率函数可以基于softmax，写成如下形式：<br>$$<br>p(e_j|e_i;\theta)=\frac{exp(e_j^{(O)}\cdot e_i^{(I)})}{\sum^K_{k=1}exp(e_k^{(O)}\cdot e_i^{(I)})}<br>$$<br>其中K是所有产品上不同可能行为的数量。上面这个等式可以看成是行为$e_i$和$e_j$的一个相似度得分，并且behavior2vec可以根据业务需求，切换不同的结果，比如需要提高推荐结果的浏览量，那就计算和view embedding的相似度；如果是付费行为那就是计算和purchasing embedding的相似度。公式可以表述如下：<br>$$<br>j = R(e_i)=\left{\begin{matrix}<br>\text{argmin}_{\forall k\neq i }cos(e_i^{(I)},p_k^{(O)}) &amp; \text{if the objective is maximize order rate} \<br>\text{argmin}_{\forall k\neq i }cos(e_i^{(I)},v_k^{(O)}) &amp;  \text{if the objective is maximize click through rate}<br>\end{matrix}\right.<br>$$<br>这里的余弦函数就是计算相似度的。</p>
+<h3 id="behavior2vec是如何进行产品类比的"><a href="#behavior2vec是如何进行产品类比的" class="headerlink" title="behavior2vec是如何进行产品类比的"></a>behavior2vec是如何进行产品类比的</h3><p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g31ucrcu7qj20i30cojrv.jpg" alt=""><br>这张图示product2vec映射的空间向量，可以看到有5个相机品牌和一个相机镜头品牌。这里能发现它对镜头和相机的区分度并不是很大，而且他们的方向上是有一定区别的。</p>
+<p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g31ufcuuadj20jy0e13yw.jpg" alt=""><br>上图是用behavior2vec映射的向量空间，可以很清楚的看到，镜头和相机厂商是有较大区别的，但是他们有一定的关系即方向一致。</p>
+<h1 id="Linkin-架构以及数据处理流程"><a href="#Linkin-架构以及数据处理流程" class="headerlink" title="Linkin 架构以及数据处理流程"></a>Linkin 架构以及数据处理流程</h1><p>论文<a href="https://arxiv.org/pdf/1809.06481v1.pdf" target="_blank" rel="noopener">linkin-Talent Search and Recommendation Systems</a></p>
+<h2 id="Online-system-architecture"><a href="#Online-system-architecture" class="headerlink" title="Online system architecture"></a><strong>Online system architecture</strong></h2><p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g32a239fpqj20kr0d0jtd.jpg" alt=""><br>首先，招聘人员的搜索请求（除了作为显式输入的查询，或以职位空缺和理想的候选人的隐式形式，以及招聘人员和会话的上下文信息，被转换为结构化的复杂查询字段（例如，规范标题/技能，公司名称，地区）和非结构化文本关键字，并发布到LinkedIn的Galene搜索引擎。然后根据指定的标准从中检索候选结果集索引，并通过使用机器学习的不同的评分模型排名。搜索结果集以及使用的功能通过排名模型，记录以供以后用于模型培训。最后，前端服务器获得排名靠前的候选者，呈现结果页面，并记录招聘人员的互动。基础搜索出的索引近乎实时更新给到linkin的会员。</p>
+<h2 id="Offline-modeling-pipeline"><a href="#Offline-modeling-pipeline" class="headerlink" title="Offline modeling pipeline"></a><strong>Offline modeling pipeline</strong></h2><p><img src="https://ws1.sinaimg.cn/large/a462f558gy1g32a3zib9dj20o50btmzd.jpg" alt=""><br>离线系统使用招聘人员使用日志，定期训练排名模型。在显示的搜索结果上从招募者交互（招募者消息的候选响应）生成训练数据。由于会员数据会随时间变化，我们还会记录计算的特征以及搜索结果，而不是在模型训练期间生成特征。离线建模流水线是为了特征工程的简易性，以及不同类型的机器学习模型的组合和实验灵活性。</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

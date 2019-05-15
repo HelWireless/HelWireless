@@ -7,7 +7,7 @@
     
 
     <title>
-      ss | 垃圾中转站 
+      邮件通信数据挖掘与可视化 | 垃圾中转站 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -16,17 +16,18 @@
     
     
 
-    <meta name="description" content="只收垃圾不填埋">
+    <meta name="description" content="原始数据收集以及储存 实现社团划分功能 实现角色分析 实现更加可视化结果呈现 设计结果有效性和准确性验证功能 设计结果数据集的进一步分析统计  社团的快速划分算法  提取邮件发送地址、邮件接收地址、邮件发送时间。发件地址代表用户，发送时间代表不同的邮件通信，发送方向为通信方向。 将邮件通信网络视为有向图$G=&amp;lt;V,E&amp;gt;$,其中用户作为节点，V是节点的个数；邮件通信作为边$e=（u,v">
+<meta name="keywords" content="数据挖掘, 算法, 数据可视化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ss | 垃圾中转站">
-<meta property="og:url" content="http://yoursite.com/2019/01/17/ss/index.html">
+<meta property="og:title" content="邮件通信数据挖掘与可视化 | 垃圾中转站">
+<meta property="og:url" content="http://yoursite.com/2019/02/19/邮件通信挖掘/index.html">
 <meta property="og:site_name" content="垃圾中转站">
-<meta property="og:description" content="只收垃圾不填埋">
+<meta property="og:description" content="原始数据收集以及储存 实现社团划分功能 实现角色分析 实现更加可视化结果呈现 设计结果有效性和准确性验证功能 设计结果数据集的进一步分析统计  社团的快速划分算法  提取邮件发送地址、邮件接收地址、邮件发送时间。发件地址代表用户，发送时间代表不同的邮件通信，发送方向为通信方向。 将邮件通信网络视为有向图$G=&amp;lt;V,E&amp;gt;$,其中用户作为节点，V是节点的个数；邮件通信作为边$e=（u,v">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-17T12:19:48.887Z">
+<meta property="og:updated_time" content="2019-02-18T09:48:51.160Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ss | 垃圾中转站">
-<meta name="twitter:description" content="只收垃圾不填埋">
+<meta name="twitter:title" content="邮件通信数据挖掘与可视化 | 垃圾中转站">
+<meta name="twitter:description" content="原始数据收集以及储存 实现社团划分功能 实现角色分析 实现更加可视化结果呈现 设计结果有效性和准确性验证功能 设计结果数据集的进一步分析统计  社团的快速划分算法  提取邮件发送地址、邮件接收地址、邮件发送时间。发件地址代表用户，发送时间代表不同的邮件通信，发送方向为通信方向。 将邮件通信网络视为有向图$G=&amp;lt;V,E&amp;gt;$,其中用户作为节点，V是节点的个数；邮件通信作为边$e=（u,v">
     
     
     
@@ -155,17 +156,22 @@ classes that you can use:
 
   <header class="post-header">
     
-    <h1 class="post-title">ss</h1>
+    <h1 class="post-title">邮件通信数据挖掘与可视化</h1>
 
     
 
     <div class="post-meta">
-      <time datetime="2019-01-17" class="post-meta__date date">2019-01-17</time> 
+      <time datetime="2019-02-19" class="post-meta__date date">2019-02-19</time> 
 
       <span class="post-meta__tags tags">
 
           
 
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/数据挖掘-算法-数据可视化/">数据挖掘, 算法, 数据可视化</a>
+            </font>
           
 
       </span>
@@ -176,7 +182,29 @@ classes that you can use:
   </header>
 
   <section id="post-content" class="article-content post">
-    
+    <ol>
+<li>原始数据收集以及储存</li>
+<li>实现社团划分功能</li>
+<li>实现角色分析</li>
+<li>实现更加可视化结果呈现</li>
+<li>设计结果有效性和准确性验证功能</li>
+<li>设计结果数据集的进一步分析统计</li>
+</ol>
+<p>社团的快速划分算法</p>
+<ol>
+<li>提取邮件发送地址、邮件接收地址、邮件发送时间。发件地址代表用户，发送时间代表不同的邮件通信，发送方向为通信方向。</li>
+<li>将邮件通信网络视为有向图$G=&lt;V,E&gt;$,其中用户作为节点，V是节点的个数；邮件通信作为边$e=（u,v）$，表示用户$u$发送邮件给用户$v$,$E$是所有边的集合。</li>
+<li>计算图$G$中节点的邻接表</li>
+<li>应用Louvain剪枝算法或者CDDW算法进行社团划分</li>
+<li>在划分过程中逐步渲染动图以动态呈现社团形成过程</li>
+<li>划分结果可以保存为静态图，进行不同方法的结果对比分析研究。</li>
+</ol>
+<p>角色分析法</p>
+<ul>
+<li>重要角色分析<br>PageRank、Degree、Closeness、Betweenness、Eigenverctor、Hits算法等</li>
+<li>链路预测算法的应用</li>
+</ul>
+
   </section>
 
   <section class="post-comments">
